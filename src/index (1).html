@@ -1,0 +1,43 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Spam Classifier</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 50px auto; background-color: #f4f4f9; color: #333; }
+        h1 { text-align: center; color: #444; }
+        form { background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        textarea { width: 100%; box-sizing: border-box; height: 150px; padding: 10px; border-radius: 5px; border: 1px solid #ccc; font-size: 1rem; }
+        input[type="submit"] { display: block; width: 100%; padding: 12px; margin-top: 10px; background-color: #007BFF; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 1.1rem; }
+        input[type="submit"]:hover { background-color: #0056b3; }
+        
+        /* This is where the result will be displayed */
+        .result { margin-top: 20px; padding: 15px; border-radius: 5px; text-align: center; font-size: 1.2em; font-weight: bold; color: white; }
+        
+        /* Specific styles for spam/not-spam results, applied by Flask */
+        .spam { background-color: #dc3545; }      /* Red for Spam */
+        .not-spam { background-color: #28a745; } /* Green for Not Spam */
+        .error { background-color: #ffc107; color: #333; } /* Yellow for Error */
+    </style>
+</head>
+<body>
+    <h1>Email Spam Classifier</h1>
+    
+    <form action="/predict" method="post">
+        <textarea name="email_text" placeholder="Enter email text here..." required>{{ request.form.email_text }}</textarea>
+        <input type="submit" value="Check for Spam">
+    </form>
+
+    <!-- This is a Jinja2 template block. It only shows if Flask sends a 'prediction' variable. -->
+    {% if prediction %}
+        <!-- The 'result_class' variable from Flask will be either 'spam' or 'not-spam' -->
+        <div class="result {{ result_class }}">
+            Prediction: {{ prediction }}
+        </div>
+    {% endif %}
+
+</body>
+</html>
